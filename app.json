@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "test_codemagic",
+    "slug": "test_codemagic",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "test_codemagic"
+}
