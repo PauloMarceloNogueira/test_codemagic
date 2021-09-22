@@ -59,7 +59,13 @@ workflows:
                 # See the following link for more details - https://docs.codemagic.io/code-signing-yaml/signing-ios/
                 XCODE_WORKSPACE: "ios/testcodemagic.xcworkspace" # <-- Put the name of your Xcode workspace here
                 XCODE_SCHEME: "testcodemagic" # <-- Put the name of your Xcode scheme here
-                # https://appstoreconnect.apple.com/access/api                
+                # https://appstoreconnect.apple.com/access/api
+                APP_STORE_CONNECT_ISSUER_ID: Encrypted(...) # <-- Put your App Store Connect Issuer Id here
+                APP_STORE_CONNECT_KEY_IDENTIFIER: Encrypted(...) # <-- Put your App Store Connect Key Identifier here
+                APP_STORE_CONNECT_PRIVATE_KEY: Encrypted(...) # <-- Put your App Store Connect Private Key here
+                CERTIFICATE_PRIVATE_KEY: Encrypted(...) # <-- Put your Certificate Private key here
+                BUNDLE_ID: "com.testcodemagic" # <-- Put your Bundle Id here e.g com.domain.myapp
+                APP_STORE_APP_ID: 1555555551 # <-- Put the app id number here. This is found in App Store Connect > App > General > App Information
             node: latest
             xcode: 12.5
             cocoapods: default
@@ -118,5 +124,19 @@ workflows:
             notify:
               success: true     # To not receive a notification when a build succeeds
               failure: false    # To not receive a notification when a build fails
-          
+          slack: 
+            # See the following link about how to connect your Slack account - https://docs.codemagic.io/publishing-yaml/distribution/#slack
+            channel: '#channel-name'
+            notify_on_build_start: true   # To receive a notification when a build starts
+            notify:
+              success: true               # To not receive a notification when a build succeeds
+              failure: false              # To not receive a notification when a build fails
+          app_store_connect:                 
+            api_key: $APP_STORE_CONNECT_PRIVATE_KEY         # Contents of the API key, can also reference environment variable such as $APP_STORE_CONNECT_PRIVATE_KEY
+            key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER       # Alphanumeric value that identifies the API key, can also reference environment variable such as $APP_STORE_CONNECT_KEY_IDENTIFIER
+            issuer_id: $APP_STORE_CONNECT_ISSUER_ID         # Alphanumeric value that identifies who created the API key, can also reference environment variable such as $APP_STORE_CONNECT_ISSUER_ID
+            submit_to_testflight: false                     # Optional boolean, defaults to false. Whether or not to submit the uploaded build to TestFlight beta review. Required for distributing to beta groups. Note: This action is performed during post-processing.
+            # beta_groups:                                  # Specify the names of beta tester groups that will get access to the build once it has passed beta review. 
+            #      - group name 1
+            #      - group name 2  
     
